@@ -1,0 +1,121 @@
+From aab5e3d23bb4f985056b158f56784159821e7b89 Mon Sep 17 00:00:00 2001
+From: bps78 <90796928+bps78@users.noreply.github.com>
+Date: Wed, 24 May 2023 11:05:45 -0500
+Subject: [PATCH] Task 1 Pt 1
+
+---
+ client3.py                                | 10 +++++++---
+ node_modules/.package-lock.json           | 12 ++++++++++++
+ node_modules/python-dateutil/package.json |  1 +
+ package-lock.json                         | 24 +++++++++++++++++++++++
+ package.json                              |  5 +++++
+ 5 files changed, 49 insertions(+), 3 deletions(-)
+ create mode 100644 node_modules/.package-lock.json
+ create mode 100644 node_modules/python-dateutil/package.json
+ create mode 100644 package-lock.json
+ create mode 100644 package.json
+
+diff --git a/client3.py b/client3.py
+index 3fc09b7..56815e4 100644
+--- a/client3.py
++++ b/client3.py
+@@ -35,14 +35,16 @@ def getDataPoint(quote):
+     stock = quote['stock']
+     bid_price = float(quote['top_bid']['price'])
+     ask_price = float(quote['top_ask']['price'])
+-    price = bid_price
++    price = (bid_price + ask_price) / 2
+     return stock, bid_price, ask_price, price
+ 
+ 
+ def getRatio(price_a, price_b):
+     """ Get ratio of price_a and price_b """
+     """ ------------- Update this function ------------- """
+-    return 1
++    if (price_b == 0):
++        return 
++    return (price_a) / price_b
+ 
+ 
+ # Main
+@@ -52,8 +54,10 @@ if __name__ == "__main__":
+         quotes = json.loads(urllib.request.urlopen(QUERY.format(random.random())).read())
+ 
+         """ ----------- Update to get the ratio --------------- """
++        prices = {}
+         for quote in quotes:
+             stock, bid_price, ask_price, price = getDataPoint(quote)
++            prices[stock] = price
+             print("Quoted %s at (bid:%s, ask:%s, price:%s)" % (stock, bid_price, ask_price, price))
+ 
+-        print("Ratio %s" % getRatio(price, price))
++        print("Ratio %s" % getRatio(prices["ABC"], prices["DEF"]))
+diff --git a/node_modules/.package-lock.json b/node_modules/.package-lock.json
+new file mode 100644
+index 0000000..c9b1333
+--- /dev/null
++++ b/node_modules/.package-lock.json
+@@ -0,0 +1,12 @@
++{
++  "name": "forage-jpmc-swe-task-1",
++  "lockfileVersion": 2,
++  "requires": true,
++  "packages": {
++    "node_modules/python-dateutil": {
++      "version": "0.0.1",
++      "resolved": "https://registry.npmjs.org/python-dateutil/-/python-dateutil-0.0.1.tgz",
++      "integrity": "sha512-08SCbZUaueiaDSg+O3SfrrbYoMT5z0Kd54U+9JRMycGSnH9m9Tu/zZ/s7bjsJUwH3CQ9j7srd0kT0vwjQTvjwg=="
++    }
++  }
++}
+diff --git a/node_modules/python-dateutil/package.json b/node_modules/python-dateutil/package.json
+new file mode 100644
+index 0000000..19c32aa
+--- /dev/null
++++ b/node_modules/python-dateutil/package.json
+@@ -0,0 +1 @@
++{ "name": "python-dateutil", "version": "0.0.1", "description": "", "main": "index.js", "scripts": { "test": "echo \"Error: no test specified\" && exit 1" }, "keywords": [], "author": "", "license": "ISC" }
+diff --git a/package-lock.json b/package-lock.json
+new file mode 100644
+index 0000000..f45c957
+--- /dev/null
++++ b/package-lock.json
+@@ -0,0 +1,24 @@
++{
++  "name": "forage-jpmc-swe-task-1",
++  "lockfileVersion": 2,
++  "requires": true,
++  "packages": {
++    "": {
++      "dependencies": {
++        
++      }
++    },
++    "node_modules/python-dateutil": {
++      "version": "0.0.1",
++      "resolved": "https://registry.npmjs.org/python-dateutil/-/python-dateutil-0.0.1.tgz",
++      "integrity": "sha512-08SCbZUaueiaDSg+O3SfrrbYoMT5z0Kd54U+9JRMycGSnH9m9Tu/zZ/s7bjsJUwH3CQ9j7srd0kT0vwjQTvjwg=="
++    }
++  },
++  "dependencies": {
++    "python-dateutil": {
++      "version": "0.0.1",
++      "resolved": "https://registry.npmjs.org/python-dateutil/-/python-dateutil-0.0.1.tgz",
++      "integrity": "sha512-08SCbZUaueiaDSg+O3SfrrbYoMT5z0Kd54U+9JRMycGSnH9m9Tu/zZ/s7bjsJUwH3CQ9j7srd0kT0vwjQTvjwg=="
++    }
++  }
++}
+diff --git a/package.json b/package.json
+new file mode 100644
+index 0000000..7c274d7
+--- /dev/null
++++ b/package.json
+@@ -0,0 +1,5 @@
++{
++  "dependencies": {
++    "python-dateutil": "^0.0.1"
++  }
++}
+-- 
+2.39.0
+
